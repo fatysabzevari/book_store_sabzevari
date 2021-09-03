@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}
+    صفحه کتابها
+{% endblock %}
+{% block body %}
+    <h1> All Product</h1>
+    <div class="container">
+        <form action="{% url 'home:product' %}">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit">search</button>
+        </form>
+        {% for data in category %}
+            <a href="{{ data.get_absolute_url }}">{{ data.name }}</a>
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+
+                </button>
+                <div class="dropdown-menu">
+                    {% for info in data.sub.all %}
+                        <a class="dropdown-item" href="{{ info.get_absolute_url }}">{{ info.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+        <div class="row">
+            {% for product in products %}
+                <div class="col-3">
+                    <h1>{{ product.name }}</h1>
+                    <a href="{{ data.get_absolute_url }}">
+                </div>
+                <img src="{{ product.image.url }}" style="width: 200px" alt=""><br>
+                </a>
+                {% if product.discount %}
+                    <h4 style="text-decoration: line-through">{{ product.unit_price }}</h4>
+                    <h3>{{ product.total_price }}</h3>
+                {% else %}
+                    <h3>{{ product.total_price }}</h3>
+                {% endif %}
+                </div>
+
+            {% endfor %}
+    </div>
+{% endblock %}

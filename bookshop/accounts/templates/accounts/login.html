@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}login {% endblock %}
+{% block body %}
+<h1> login</h1>
+    <div class="container mt-5">
+        <form action= ""method ="post">
+            {% csrf_token %}
+            <input type="text" name="user" placeholder="plz user"><br>
+            <input type="password" name="password" placeholder="plz password"><br>
+            <button type="submit">login</button>
+        </form>
+        <br>
+            <a href="{% url 'accounts:reset' %}">رمز عبور خود را فراموش کرده اید؟</a>
+    </div>
+        {% endblock %}

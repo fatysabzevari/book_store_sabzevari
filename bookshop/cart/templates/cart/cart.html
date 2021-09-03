@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+<!--{% block title %}-->
+<!--{% endblock %}-->
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <table class="table table-dark">
+                  <thead>
+                  <tr>
+                      <th scope="col">عکس</th>
+                      <th scope="col">نام کتاب</th>
+                      <th scope="col">تعداد</th>
+                      <th scope="col">قیمت</th>
+                      <th scope="col">قیمت کل</th>
+                      <th scope="col">حذف</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for c in cart %}
+                    <tr class="table-active">
+                      <td class="table-active"><img src="{{ c.product.image.url }}" style="width: 50px"></td>
+                      <td>{{ c.product.name }}</td>
+                      <td>{{c.variant.publish_variant.name}}</td>
+                      <td>
+                          {% if c.product.status != 'None' %}
+                          {% widthratio c.variant.total_price 1 c.quantity %}
+                          {% else %}
+                          {% widthratio c.product.total_price 1 c.quantity %}
+                          {% endif %}
+                      </td>
+                <!--      <td>-->
+                <!--&lt;!&ndash;          <a href="{% url 'cart:add_single' c.id  %}"><i class="fa fa-plus"></i></a>&ndash;&gt;-->
+                <!--&lt;!&ndash;          {{ c.quantity }}&ndash;&gt;-->
+                <!--          <a href="{% url 'cart:remove_single' c.id  %}"><i class="fa fa-minus"></i></a>-->
+                <!--      </td>-->
+                <!--      <td>{{ c.product.price }}</td>-->
+                <!--      <td>-->
+                <!--         {%  widthratio c.product.price 1 c.quantity %}-->
+                <!--      </td>-->
+                       <td>
+                           <a href="{% url 'cart:remove_cart' c.id %}"><i class="fa fa-trash" style="color: red"></i></a>
+                       </td>
+                    </tr>
+                  {% endfor %}
+                  <tr>
+                      <td colspan="7"> جمع کل : {{ total }}</td>
+                  </tr>
+                  </tbody>
+            </table>
+
+
+        </div>
+
+
+        <div class="row">
+            <form method="post" action="{% url 'order:order_create' %}">
+                {% csrf_token %}
+                <div class="card" style="padding: 10 px; background-color: cadetblue ">
+                    <label for="">email:
+                        <input type="email" name="email" value="{{ user.email }}">
+                    </label>
+                    <label for="">name:
+                        <input type="text" name="f_name" value="{{ user.first_name }}">
+                    </label>
+                    <label for="">last name:
+                        <input type="text" name="l_name" value="{{ user.last_name }}" required>
+                    </label>
+                    <label for="">address:
+                        <input type="text" name="address" required >
+                    </label>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-danger">order</button>
+            </form>
+
+
+        <div>
+
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+

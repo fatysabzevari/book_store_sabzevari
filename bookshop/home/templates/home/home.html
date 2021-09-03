@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}
+فروشگاه کتاب
+{%endblock%}
+{% block body %}
+    <h1> Home Page</h1>
+    {% for data in category %}
+        <a href="{% url 'home:category' data.slug data.id %}">
+        <h1>{{ data.name }}</h1>
+        </a>
+        <img src="{{ data.image.url}}" style="width: 300px; height:300px;" alt="" >
+    {% endfor %}
+{% endblock %}

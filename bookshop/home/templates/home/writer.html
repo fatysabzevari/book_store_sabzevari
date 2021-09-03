@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}
+صغحه نویسندگان
+{% endblock %}
+{% block body %}
+<h1>  Writers </h1>
+    {% for data in writers %}
+        <h1>{{ writer.name }}</h1>
+        <a href="{% url 'home:writer' data.slug data.id %}">
+         <h1>{{ data.name }}</h1>
+        </a>
+        <img src="{{ data.image.url}}" style="width: 300px; height:300px;" alt="" >
+    {% endfor %}
+{% endblock %}

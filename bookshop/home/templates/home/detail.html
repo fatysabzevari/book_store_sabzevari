@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}
+صفحه جزییات
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <h1> {{ product.name }}</h1>
+
+
+        <img style="width: 200px" src="{{ product.image.url }}"  alt=""><br>
+        <p>{{ product.information }}</p>
+        <hr>
+        {% if product.status == 'publish' %}
+            <form action="" method="post">
+            {% csrf_token %}
+                {% for data in variant %}
+                    <input type="radio" value="{{ data.id }}" {% if variant.id == data.id %} checked {% endif %}
+                           name="select" onchange="this.form.submit();">
+                    <a href="" style="text-decoration: none">{{ data.publish_variant }}</a>
+                {% endfor %}
+            </form>
+
+        {% endif %}
+        <div class="card bg-danger m-2">
+            <h4> your choice price:{{ variants.total_price}} </h4>
+        </div>
+        <div class="card">
+            {% if product.status != 'None' %}
+            <form method="post" action="">
+                {% csrf_token %}
+                <input type="hidden" name="select"  value="{{ variants.id }}" >
+                <input type="number" name="quantity" min="1" value="1" max="{{ variants.amount }}" >
+                <button type="submit">Add</button>
+            </form>
+            {% else %}
+            <form method="post" action="{% url 'cart:add_cart' product.id %}">
+                {% csrf_token %}
+                <input type="number" name="quantity" min="1" value="1" max="{{ product.amount }}" >
+                required oninvalid="setCustomValidity(باید تعداد حداکثر '{{ product.amount}} باشد )">
+                <button type="submit">Add</button>
+            </form>
+            {% endif%}
+
+
+
+        </div>
+
+
+
+<!--        <small>price :{{ product.unit_price }}</small>-->
+        <p> {{ product.information|safe }}</p>
+        <h2> like: {{ product.total_like }}</h2>
+        {% if request.user.is_authenticated %}
+<!--                {% if is_like %}-->
+<!--                        <a href="{% url 'home:product_like' product.id %}" class="btn btn-danger {% if is_unlike %} disabled {% endif %}">dislike</a><br><br>-->
+<!--                {% else %}-->
+                        <a href="{% url 'home:product_like' product.id %}"
+                           class="btn btn-info {% if is_unlike %} disabled {% endif %}">like</a><br><br>
+<!--                {% endif %}-->
+
+                        <h2> unlike: {{ product.total_unlike }}</h2>
+<!--                {% if is_unlike %}-->
+<!--                        <a href="{% url 'home:product_unlike' product.id %}" class="btn btn-primary {% if is_like %} disabled {% endif %}">like</a><br><br>-->
+<!--                {% else %}-->
+                        <a href="{% url 'home:product_unlike' product.id %}" class="btn btn-warning {% if is_like %} disabled {% endif %}">dislike</a><br><br>
+<!--                {% endif %}-->
+
+
+
+        {% endif %}
+    </div>
+<!--                {% if product.discount %}-->
+<!--                    <h4 style="text-decoration: line-through">{{ product.unit_price }}</h4>-->
+<!--                    <h3>{{ product.total_price }}</h3>-->
+<!--                {% else %}-->
+<!--                    <h3>{{ product.total_price }}</h3>-->
+<!--                {% endif %}-->
+
+{% endblock %}
